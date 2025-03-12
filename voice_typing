@@ -30,7 +30,7 @@ trap cleanup 0
 trans(){
     while read audio; do
         # transcribe audio
-        whisper "$audio" --fp16 False --language English --model tiny\
+        whisper-cli "$audio" --language en -otxt -of /tmp/tmp --model /usr/share/whisper.cpp-model-tiny.en/ggml-tiny.en.bin
         --output_format txt --output_dir /tmp
         # remove temporary audio file
         rm -f "$audio"
@@ -61,7 +61,7 @@ while true; do
     # to 5% or more. This can happen with poor recording equipment
     # or noisy environments with heaters and fans going.
 
-    rec -c 1 -r 22050 -t mp3 "$tmp" silence 1 0.2 4% 1 1.0 2%
+    rec -c 1 -r 16000 -t wav "$tmp" silence 1 0.2 4% 1 1.0 2%
 
     # echo temporary audio file name to transcription queue
     echo "$tmp"
